@@ -1,4 +1,4 @@
-title: "TAConnect"
+title: "AB-3"
 theme: minima
 
 header_pages:
@@ -8,7 +8,7 @@ header_pages:
 
 markdown: kramdown
 
-repository: "AY2526S2-CS2103T-T10-4/tp"
+repository: "se-edu/addressbook-level3"
 github_icon: "images/github-icon.png"
 
 plugins:
