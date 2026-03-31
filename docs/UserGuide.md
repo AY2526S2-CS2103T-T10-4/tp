@@ -5,16 +5,15 @@ title: User Guide
 
 # TAConnect
 
-**TAConnect** is a **desktop app for managing contacts, designed for NUS Computer Science Teaching Assistants and optimised for use via a Command Line Interface (CLI)** while still providing the benefits of a Graphical User Interface (GUI). 
-
-This app enables TAs to **quickly and efficiently** organise contacts into courses, tutorial groups, and additional fields such as Telegram handles, with only names being mandatory. Its fast CLI commands support **intuitive data editing and retrieval**, while the GUI presents **neatly organised lists, detailed contact information, and visualisations of student attendance.**
-
-**Target Users:** NUS Computer Science TAs
-
-**Assumptions:**
-* Users have basic computer literacy 
-* Users are familiar with command-line operations.
-
+>**TAConnect** is a **desktop app for managing contacts, designed for NUS Computer Science Teaching Assistants and optimised for use via a Command Line Interface (CLI)** while still providing the benefits of a Graphical User Interface (GUI). 
+>
+>This app enables TAs to **quickly and efficiently** organise contacts into courses, tutorial groups, and additional fields such as Telegram handles, with only names being mandatory. Its fast CLI commands support **intuitive data editing and retrieval**, while the GUI presents **neatly organised lists, detailed contact information, and visualisations of student attendance.**
+>
+>**Target Users:** NUS Computer Science TAs
+>
+>**Assumptions:**
+>* Users have basic computer literacy 
+>* Users are familiar with command-line operations.
 
 ## Table of Contents
 * Quick start
