@@ -202,7 +202,7 @@ Format: `unattend INDEX c/COURSE_CODE w/WEEK`
 Examples:
 * `unattend 1 c/CS2103T w/1` unmarks the attendance of the 1st student for CS2103T in Week 1.
 
-### Locating persons by name: `find`
+### Locating persons by name : `find`
 
 Finds persons whose names contain any of the given keywords.
 
