@@ -17,7 +17,27 @@ This app enables TAs to **quickly and efficiently** organise contacts into cours
 
 
 ## Table of Contents
-
+* Quick start
+* Features
+    * Viewing help : `help`
+    * Adding a person : `add`
+    * Listing all persons : `list`
+    * Editing a person : `edit`
+    * Enrolling a person : `enroll`
+    * Unenrolling a person : `unenroll`
+    * Marking attendance of a person : `attend`
+    * Unmarking attendance of a person : `unattend`
+    * Locating persons by name : `find`
+    * Deleting a person : `delete`
+    * Viewing a contact : `view`
+    * Clearing all entries : `clear`
+    * Exiting the program : `exit`
+    * Saving the data
+    * Editing the data file
+    * Archiving data files
+* FAQ
+* Known issues
+* Command summary
 --------------------------------------------------------------------------------------------------------------------
 
 ## Quick start
@@ -152,7 +172,7 @@ Format: `unenroll INDEX c/COURSE_CODE`
 Examples:
 * `unenroll 1 c/CS2103T` unenrolls the 1st student from CS2103T.
 
-### Marking attendance : `attend`
+### Marking attendance of a person : `attend`
 
 Marks a student's attendance for a specific course and week.
 
@@ -168,7 +188,7 @@ Examples:
 * `attend 1 c/CS2103T w/1` marks the attendance of the 1st student for CS2103T in Week 1.
 * `attend 2 c/CS2101 w/10` marks the attendance of the 2nd student for CS2101 in Week 10.
 
-### Unmarking attendance : `unattend`
+### Unmarking attendance of a person : `unattend`
 
 Unmarks a student's attendance for a specific course and week.
 
