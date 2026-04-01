@@ -13,30 +13,10 @@ title: User Guide
 >
 >**Assumptions:**
 >* Users have basic computer literacy 
->* Users are familiar with command-line operations.
+>* Users are familiar with command-line operations
 
 ## Table of Contents
-* Quick start
-* Features
-    * Viewing help : `help`
-    * Adding a person : `add`
-    * Listing all persons : `list`
-    * Editing a person : `edit`
-    * Enrolling a person : `enroll`
-    * Unenrolling a person : `unenroll`
-    * Marking attendance of a person : `attend`
-    * Unmarking attendance of a person : `unattend`
-    * Locating persons by name : `find`
-    * Deleting a person : `delete`
-    * Viewing a contact : `view`
-    * Clearing all entries : `clear`
-    * Exiting the program : `exit`
-    * Saving the data
-    * Editing the data file
-    * Archiving data files
-* FAQ
-* Known issues
-* Command summary
+{:toc}
 --------------------------------------------------------------------------------------------------------------------
 
 ## Quick start
