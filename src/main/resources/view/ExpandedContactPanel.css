@@ -16,7 +16,6 @@
     -fx-text-fill: #342a01;
     -fx-font-weight: bold;
     -fx-font-size: 24px;
-    -fx-padding: 0 0 6 0;
 }
 
 .shared-scroll-pane {
@@ -83,7 +82,7 @@
 }
 
 .tags-scroll-pane {
-    -fx-padding: 0 0 6 0;
+    -fx-padding: 0 0 3 0;
 }
 
 #tags .label {
@@ -91,10 +90,6 @@
     -fx-padding: 3 6 3 6;
     -fx-background-radius: 4;
     -fx-font-size: 13px;
-}
-
-.tags-flow-pane {
-    -fx-padding: 0 4 0 0;
 }
 
 .separating-line {

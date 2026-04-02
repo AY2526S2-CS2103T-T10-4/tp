@@ -131,11 +131,26 @@ public class MainWindow extends UiPart<Stage> {
 
         expandedContactPanel = new ExpandedContactPanel();
 
-        logic.personToShowProperty().addListener((obs, oldPerson, newPerson) -> {
-            expandedContactPanel.setSelectedPerson(newPerson);
-        });
+        handlePersonSelectionChanges();
 
         expandedContactPanelPlaceholder.getChildren().add(expandedContactPanel.getRoot());
+    }
+
+    /**
+     * Detects changes in the selected person, then updates the {@code ExpandedContactPanel}.
+     * Scrolls the {@code PersonListPanel} to show corresponding {@code PersonCard} only if
+     * the person selection was triggered via commands and not by a mouseclick.
+     */
+    private void handlePersonSelectionChanges() {
+        logic.personToShowProperty().addListener((obs, oldPerson, newPerson) -> {
+            expandedContactPanel.setSelectedPerson(newPerson);
+
+            if (newPerson != null && !(personListPanel.isMouseClick())) {
+                personListPanel.scrollToPerson(newPerson);
+            }
+
+            personListPanel.resetMouseClick();
+        });
     }
 
     /**

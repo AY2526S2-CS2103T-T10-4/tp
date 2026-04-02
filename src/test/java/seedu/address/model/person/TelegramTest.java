@@ -33,6 +33,7 @@ public class TelegramTest {
         assertFalse(Telegram.isValidTelegramHandle("@"));
         assertFalse(Telegram.isValidTelegramHandle("john doe"));
         assertFalse(Telegram.isValidTelegramHandle("john"));
+        assertFalse(Telegram.isValidTelegramHandle("-"));
 
         // valid telegram handles
         assertTrue(Telegram.isValidTelegramHandle("johndoe"));
@@ -83,12 +84,9 @@ public class TelegramTest {
     @Test
     public void getDisplayValue_returnsCorrectDisplay() {
         Telegram handleWithoutAt = new Telegram("alice123");
-        assertEquals("@alice123", handleWithoutAt.getDisplayValue());
+        assertEquals("@alice123", handleWithoutAt.toDisplayString());
 
         Telegram handleWithAt = new Telegram("@alice123");
-        assertEquals("@alice123", handleWithAt.getDisplayValue());
-
-        Telegram missingHandle = new Telegram("-");
-        assertEquals("-", missingHandle.getDisplayValue());
+        assertEquals("@alice123", handleWithAt.toDisplayString());
     }
 }

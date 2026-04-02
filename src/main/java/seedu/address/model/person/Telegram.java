@@ -26,12 +26,7 @@ public class Telegram {
     public Telegram(String telegramHandle) {
         requireNonNull(telegramHandle);
 
-        String cleanHandle = telegramHandle;
-
-        if (!cleanHandle.equals("-") && cleanHandle.startsWith("@")) {
-            cleanHandle = cleanHandle.substring(1);
-        }
-
+        String cleanHandle = cleanHandle(telegramHandle);
         checkArgument(isValidTelegramHandle(cleanHandle), MESSAGE_CONSTRAINTS);
 
         this.value = cleanHandle;
@@ -39,22 +34,30 @@ public class Telegram {
 
     /**
      * Returns true if a given string is a valid telegramHandle.
+     * Dash ("-") and empty strings are considered invalid.
      */
     public static boolean isValidTelegramHandle(String test) {
-        return test.equals("-") || test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Removes the leading '@' from the telegram handle if present.
+     */
+    private static String cleanHandle(String telegramHandle) {
+        if (telegramHandle.startsWith("@")) {
+            return telegramHandle.substring(1);
+        }
+
+        return telegramHandle;
     }
 
     /**
     * Returns telegram handle formatted for display in the UI.
-    * Adds '@' in front of telegram value if it is not '-', otherwise returns it unchanged.
+    * Adds '@' in front of telegram value.
     *
     * @return the formatted telegram handle for display.
     */
-    public String getDisplayValue() {
-        if (value.equals("-")) {
-            return value;
-        }
-
+    public String toDisplayString() {
         return TELEGRAM_PREFIX + value;
     }
 
@@ -78,9 +81,7 @@ public class Telegram {
         return value.toLowerCase().hashCode();
     }
 
-    /**
-     * Format state as text for viewing.
-     */
+    @Override
     public String toString() {
         return value;
     }

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -19,17 +20,18 @@ import seedu.address.model.person.TutInfo;
  */
 public class PersonDetailsPanel extends UiPart<Region> {
 
-    public static final String EMPTY_FIELD_VALUE = "---";
+    public static final String MISSING_FIELD_DISPLAY = "---";
 
     private static final String FXML = "PersonDetailsPanel.fxml";
 
     private static final String[] FIELD_NAMES = { "Email", "Telegram", "Phone", "Address" };
 
-    private static final double TAGS_FLOWPANE_MAX_HEIGHT = 55;
-
     private final Logger logger = LogsCenter.getLogger(PersonDetailsPanel.class);
 
     private final Person person;
+
+    @FXML
+    private ScrollPane nameScrollPane;
 
     @FXML
     private Label name;
@@ -77,6 +79,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
         assert person != null : "Person must not be null";
         this.person = person;
 
+        preventVerticalScroll(nameScrollPane);
         displayPersonDetails();
     }
 
@@ -107,10 +110,10 @@ public class PersonDetailsPanel extends UiPart<Region> {
         name.setText(formatFieldValue(person.getName().fullName));
 
         String[] fieldValues = {
-                person.getEmail().value,
-                person.getTelegram().getDisplayValue(),
-                person.getPhone().value,
-                person.getAddress().value
+                person.getDisplayEmail(),
+                person.getDisplayTelegram(),
+                person.getDisplayPhone(),
+                person.getDisplayAddress()
         };
 
         displayCourseTutorials();
@@ -141,16 +144,6 @@ public class PersonDetailsPanel extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
-
-        limitTagsHeight();
-    }
-
-    /**
-     * Limits the height of the {@code tags} to {@code TAGS_FLOWPANE_MAX_HEIGHT}.
-     */
-    private void limitTagsHeight() {
-        tags.heightProperty().addListener((observable, oldHeight, newHeight)
-                -> tags.setPrefHeight(Math.min(newHeight.doubleValue(), TAGS_FLOWPANE_MAX_HEIGHT)));
     }
 
     /**
@@ -206,7 +199,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
     /**
      * Formats a field value for display.
-     * Returns "---" if the value is empty, or a dash ("-") representing an unfilled optional field.
+     * Returns MISSING_FIELD_DISPLAY if the value is empty, or dash showing an unfilled optional field.
      * Returns the value unchanged otherwise.
      *
      * @param value The value of the field.
@@ -216,7 +209,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
         assert value != null : "Field values must not be null";
 
         if (isMissingValue(value)) {
-            return EMPTY_FIELD_VALUE;
+            return MISSING_FIELD_DISPLAY;
         }
 
         return value;
@@ -269,6 +262,18 @@ public class PersonDetailsPanel extends UiPart<Region> {
         label.getStyleClass().add("course-tutorial-label");
 
         courseTutorials.getChildren().add(label);
+    }
+
+    /**
+     * Prevents vertical scrolling of a ScrollPane by consuming vertical scroll events.
+     */
+    private void preventVerticalScroll(ScrollPane scrollPane) {
+        // Solution below inspired by https://stackoverflow.com/a/53991807
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaY() != 0) {
+                event.consume();
+            }
+        });
     }
 
     /**

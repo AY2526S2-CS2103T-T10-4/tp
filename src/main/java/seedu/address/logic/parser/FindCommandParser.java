@@ -1,12 +1,20 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL;
 
-import java.util.Arrays;
+import java.util.List;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonMatchesKeywordsPredicate;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -19,15 +27,32 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                        PREFIX_TAG, PREFIX_TELEGRAM, PREFIX_COURSE, PREFIX_TUTORIAL);
+
+        List<String> nameKeywords = argMultimap.getAllValues(PREFIX_NAME);
+        List<String> phoneKeywords = argMultimap.getAllValues(PREFIX_PHONE);
+        List<String> emailKeywords = argMultimap.getAllValues(PREFIX_EMAIL);
+        List<String> addressKeywords = argMultimap.getAllValues(PREFIX_ADDRESS);
+        List<String> tagKeywords = argMultimap.getAllValues(PREFIX_TAG);
+        List<String> telegramKeywords = argMultimap.getAllValues(PREFIX_TELEGRAM);
+        List<String> courseKeywords = argMultimap.getAllValues(PREFIX_COURSE);
+        List<String> tutorialKeywords = argMultimap.getAllValues(PREFIX_TUTORIAL);
+
+        if (nameKeywords.isEmpty() && phoneKeywords.isEmpty() && emailKeywords.isEmpty()
+                && addressKeywords.isEmpty() && tagKeywords.isEmpty() && telegramKeywords.isEmpty()
+                && courseKeywords.isEmpty() && tutorialKeywords.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        String[] nameKeywords = trimmedArgs.split("\\s+");
+        if (!tutorialKeywords.isEmpty() && courseKeywords.isEmpty()) {
+            throw new ParseException(FindCommand.MESSAGE_TUTORIAL_REQUIRES_COURSE);
+        }
 
-        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+        return new FindCommand(new PersonMatchesKeywordsPredicate(
+                nameKeywords, phoneKeywords, emailKeywords, addressKeywords,
+                tagKeywords, telegramKeywords, tutorialKeywords, courseKeywords));
     }
-
 }

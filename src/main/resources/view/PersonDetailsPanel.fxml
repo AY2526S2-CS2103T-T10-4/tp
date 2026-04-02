@@ -9,21 +9,21 @@
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="3">
   <ScrollPane fx:id="nameScrollPane" styleClass="shared-scroll-pane" fitToWidth="false" fitToHeight="true"
-      hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="40">
+      hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="45">
     <Label fx:id="name" styleClass="name-label" />
   </ScrollPane>
 
   <ScrollPane fx:id="courseTutorialsScrollPane" styleClass="shared-scroll-pane" HBox.hgrow="ALWAYS"
-      fitToWidth="false" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="50">
-    <HBox fx:id="courseTutorials" spacing="7" />
+      fitToWidth="false" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="45">
+    <HBox fx:id="courseTutorials" spacing="10" />
   </ScrollPane>
 
   <HBox fx:id="fieldsContainer" styleClass="fields-container" spacing="7">
-    <VBox fx:id="fieldNamesColumn" styleClass="field-names-column" minWidth="80"/>
+    <VBox fx:id="fieldNamesColumn" styleClass="field-names-column" minWidth="80" />
 
     <ScrollPane fx:id="fieldValuesScrollPane" styleClass="shared-scroll-pane" HBox.hgrow="ALWAYS"
         hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="115">
-      <VBox fx:id="fieldValuesColumn" styleClass="field-values-column"/>
+      <VBox fx:id="fieldValuesColumn" styleClass="field-values-column" />
     </ScrollPane>
   </HBox>
 

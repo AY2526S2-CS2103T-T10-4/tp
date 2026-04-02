@@ -26,9 +26,7 @@ public class Address {
      */
     public Address(String address) {
         requireNonNull(address);
-        if (!address.equals("-")) {
-            checkArgument(isValidAddress(address), MESSAGE_CONSTRAINTS);
-        }
+        checkArgument(isValidAddress(address), MESSAGE_CONSTRAINTS);
         value = address;
     }
 

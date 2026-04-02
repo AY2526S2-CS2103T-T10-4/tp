@@ -224,6 +224,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTag_emptyTag_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTag(""));
+        assertThrows(ParseException.class, () -> ParserUtil.parseTag("  "));
+    }
+
+    @Test
     public void parseTag_validValueWithoutWhitespace_returnsTag() throws Exception {
         Tag expectedTag = new Tag(VALID_TAG_1);
         assertEquals(expectedTag, ParserUtil.parseTag(VALID_TAG_1));
@@ -289,6 +295,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTelegram_invalidEmptyPlaceholder_throwsParseException() throws Exception {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTelegram("-"));
+    }
+
+    @Test
     public void parseTelegram_validValueWithoutWhitespace_returnsTelegram() throws Exception {
         Telegram expectedTelegram = new Telegram("@johndoe");
         assertEquals(expectedTelegram, ParserUtil.parseTelegram("@johndoe"));
@@ -299,13 +310,6 @@ public class ParserUtilTest {
         String telegramWithWhitespace = "  @johndoe  ";
         Telegram expectedTelegram = new Telegram("@johndoe");
         assertEquals(expectedTelegram, ParserUtil.parseTelegram(telegramWithWhitespace));
-    }
-
-    @Test
-    public void parseTelegram_emptyValue_returnsTelegramPlaceholder() throws Exception {
-        Telegram expectedTelegram = new Telegram("-");
-        assertEquals(expectedTelegram, ParserUtil.parseTelegram(""));
-        assertEquals(expectedTelegram, ParserUtil.parseTelegram("  \n  "));
     }
 
     @Test

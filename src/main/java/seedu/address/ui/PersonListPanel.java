@@ -19,6 +19,9 @@ public class PersonListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
 
+    // True when a PersonCard is selected by a mouse click
+    private boolean isMouseClick = false;
+
     @FXML
     private ListView<Person> personListView;
 
@@ -32,8 +35,44 @@ public class PersonListPanel extends UiPart<Region> {
 
         logger.fine("Initializing PersonListPanel with " + personList.size() + " contacts in the list.");
 
+        personListView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            isMouseClick = true;
+        });
+
         personListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> onPersonSelected.accept(newValue));
+    }
+
+    /**
+     * Scrolls the {@code PersonListPanel} to show and select the given {@code Person}.
+     * This method should only be triggered by user-commands and not by mouse clicks.
+     *
+     * @param person the {@code Person} to scroll to and select.
+     */
+    public void scrollToPerson(Person person) {
+        assert person != null : "The person being scrolled to in PersonListPanel must not be null";
+        assert !isMouseClick : "scrollToPerson should not be called by a mouse click";
+
+        int index = personListView.getItems().indexOf(person);
+
+        if (index >= 0) {
+            personListView.scrollTo(index);
+            personListView.getSelectionModel().select(index);
+        }
+    }
+
+    /**
+     * Returns true if the selection was triggered by a mouse click.
+     */
+    public boolean isMouseClick() {
+        return isMouseClick;
+    }
+
+    /**
+     * Marks the current selection was not due to a mouse click.
+     */
+    public void resetMouseClick() {
+        isMouseClick = false;
     }
 
     /**

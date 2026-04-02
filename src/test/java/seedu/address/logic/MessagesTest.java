@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,15 +18,17 @@ public class MessagesTest {
 
     @Test
     public void format_personWithNameOnly_success() {
-        Person person = new PersonBuilder().withPhone("-")
-                .withEmail("-")
-                .withAddress("-")
-                .withTelegram("-")
+        Person person = new PersonBuilder()
+                .withoutPhone()
+                .withoutEmail()
+                .withoutAddress()
+                .withoutTelegram()
                 .build();
 
         String expectedString = person.getName()
                 + "; Phone: -"
                 + "; Email: -"
+                + "; Telegram: -"
                 + "; Address: -"
                 + "; Courses: "
                 + "; Tags: ";
@@ -34,19 +37,45 @@ public class MessagesTest {
     }
 
     @Test
-    public void format_personWithAllFields_success() {
+    public void format_personWithAllFieldsSingleTag_success() {
         Person person = new PersonBuilder()
                 .withTags("friend")
                 .withTutInfos(List.of(new TutInfo("CS2101", "t10"), new TutInfo("CS2103T", "t01")))
                 .build();
 
         String expectedString = person.getName()
-            + "; Phone: " + person.getPhone()
-            + "; Email: " + person.getEmail()
-            + "; Address: " + person.getAddress()
+            + "; Phone: " + person.getDisplayPhone()
+            + "; Email: " + person.getDisplayEmail()
+            + "; Telegram: " + person.getDisplayTelegram()
+            + "; Address: " + person.getDisplayAddress()
             + "; Courses: [" + person.getTutInfos().get(0).toDisplayString() + "]"
             + "[" + person.getTutInfos().get(1).toDisplayString() + "]"
             + "; Tags: " + person.getTags().toArray()[0];
+
+        assertEquals(expectedString.toString(), Messages.format(person));
+    }
+
+    @Test
+    public void format_personWithAllFieldsMultipleTags_success() {
+        Person person = new PersonBuilder()
+                .withTags("friend", "brother")
+                .withTutInfos(List.of(new TutInfo("CS2101", "t10"), new TutInfo("CS2103T", "t01")))
+                .build();
+
+        String expectedTagString = person.getTags().stream()
+                .map(tag -> tag.tagName)
+                .sorted()
+                .map(tagName -> "[" + tagName + "]")
+                .collect(Collectors.joining());
+
+        String expectedString = person.getName()
+            + "; Phone: " + person.getDisplayPhone()
+            + "; Email: " + person.getDisplayEmail()
+            + "; Telegram: " + person.getDisplayTelegram()
+            + "; Address: " + person.getDisplayAddress()
+            + "; Courses: [" + person.getTutInfos().get(0).toDisplayString() + "]"
+            + "[" + person.getTutInfos().get(1).toDisplayString() + "]"
+            + "; Tags: " + expectedTagString;
 
         assertEquals(expectedString.toString(), Messages.format(person));
     }

@@ -37,7 +37,7 @@ title: User Guide
 
    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 tg/@johndoe` : Adds a contact named `John Doe` to the Address Book.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete 3` : Deletes the 3rd contact shown in the current contact list.
 
    * `view 2` : Displays the full details of the second contact in the current contact list.
 
@@ -45,9 +45,9 @@ title: User Guide
 
    * `exit` : Exits the app.
 
-   * `enroll 1 c/CS2103T tut/T01` : Enrolls the first student into CS2103T tutorial group T01.
+   * `enroll 1 c/CS2103T tut/T01` : Enrolls the first contact in the current contact list into CS2103T tutorial group T01.
 
-   * `attend 1 c/CS2103T w/1` : Marks the first student as attended for CS2103T in Week 1.
+   * `attend 1 c/CS2103T w/1` : Marks the first contact in the current contact list as attended for CS2103T in Week 1.
 
 1. Refer to the [Features](#features) below for details of each command.
 
@@ -182,24 +182,43 @@ Format: `unattend INDEX c/COURSE_CODE w/WEEK`
 Examples:
 * `unattend 1 c/CS2103T w/1` unmarks the attendance of the 1st student for CS2103T in Week 1.
 
-### Locating persons by name : `find`
+### Locating contacts: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose attributes matches at least one of the given keywords for every field specified in the command flags.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [n/NAME]… [p/PHONE_NUMBER]… [e/EMAIL]… [a/ADDRESS]… [tg/TELEGRAM_HANDLE]… [t/TAG]… [c/COURSE_CODE]… [tut/TUTORIAL_GROUP]…`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Although all fields are optional, the `find` command still needs at least one field to execute.
+* Persons matching at least one keyword for a given field will be returned 
+(i.e., `OR` search **within** a single field).
+e.g., `find n/alex n/david` will return `Alex Yeoh`, `David Li`.
+* Multiple fields can be specified here; persons must match all specifie field predicates to be returned 
+(i.e., `AND` search **across** different fields).
+e.g., `find n/John c/CS2103T` will return persons with "John" in their name **AND** enrolled in "CS2103T".
+* The search is case-insensitive. e.g `n/hans` will match `Hans`
+* The order of the flags does not matter. e.g. `find n/Alex c/CS2103T` 
+will have the same effect as `find c/CS2103T n/Alex`
+* Partial matching is supported for longer fields (i.e. Name, Phone number, Email, Address, and Telegram handle).
+e.g. `n/Han` will match `Hans`
+* Exact matching is used for shorter fields (i.e. Tag, Course code, and Tutorial group). 
+e.g. `c/CS210` won't match `CS2103T`
+* To search by tutorial group, you must also provide at least one course code (e.g., `c/CS2103T tut/T01 tut/T02 tut/T03`).
+Which means commands like `find tut/T01` won't work.
+* Multiple course codes and/or tutorial groups can be provided together. The standard `AND`/`OR` rules still apply:
+    * Multiple course codes (e.g., `c/CS2103T c/CS2101`) will match contacts in *either* course (`OR` search).
+    * Multiple tutorial groups (e.g., `tut/T01 tut/T02`) will match contacts in *either* tutorial group (`OR` search).
+    * Providing both will match contacts who are in (at least one of the courses) `AND` (at least one of the tutorial groups).
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
+* `find n/John` returns `john` and `John Doe`
+* `find n/alex n/david` returns `Alex Yeoh`, `David Li`
+* `find c/CS2103T tut/T01` returns all contacts in CS2103T tutorial group T01.
+* `find c/CS2103T tut/T01 tut/T02` returns all contacts in CS2103T who are in tutorial group T01 **OR** T02.
+* `find c/CS2103T c/CS2101 tut/T01` returns all contacts in CS2103T **OR** CS2101 who are in tutorial group T01.
+* `find p/807 e/alex` returns all contacts with `807` in their phone number **AND** `alex` in their email address.
+* `find n/alex n/david t/friends t/buddy` returns contacts whose name contains "alex" **OR** "david", **AND** who are tagged as "friends" **OR** "buddy".
 
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+  ![result for 'find n/alex n/david'](images/findAlexDavidResult.png)
 
 ### Deleting a person : `delete`
 
@@ -282,7 +301,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find** | `find [n/NAME]… [p/PHONE_NUMBER]… [e/EMAIL]… [a/ADDRESS]… [tg/TELEGRAM_HANDLE]… [t/TAG]… [c/COURSE_CODE]… [tut/TUTORIAL_GROUP]…` <br> e.g., `find p/807 e/alex`
 **View** | `view INDEX`<br> e.g., `view 1`
 **List** | `list`
 **Help** | `help`
@@ -290,3 +309,4 @@ Action | Format, Examples
 **Unenroll** | `unenroll INDEX c/COURSE_CODE` <br> e.g., `unenroll 1 c/CS2103T`
 **Attend** | `attend INDEX c/COURSE_CODE w/WEEK` <br> e.g., `attend 1 c/CS2103T w/1`
 **Unattend** | `unattend INDEX c/COURSE_CODE w/WEEK` <br> e.g., `unattend 1 c/CS2103T w/1`
+**Exit** | `exit`

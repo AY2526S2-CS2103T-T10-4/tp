@@ -29,10 +29,10 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_TAG = "#friend";
 
     private static final String VALID_NAME = BENSON.getName().toString();
-    private static final String VALID_PHONE = BENSON.getPhone().toString();
-    private static final String VALID_EMAIL = BENSON.getEmail().toString();
-    private static final String VALID_ADDRESS = BENSON.getAddress().toString();
-    private static final String VALID_TELEGRAM = BENSON.getTelegram().toString();
+    private static final String VALID_PHONE = BENSON.getDisplayPhone();
+    private static final String VALID_EMAIL = BENSON.getDisplayEmail();
+    private static final String VALID_ADDRESS = BENSON.getDisplayAddress();
+    private static final String VALID_TELEGRAM = BENSON.getDisplayTelegram();
     private static final List<JsonAdaptedTag> VALID_TAGS = BENSON.getTags().stream()
             .map(JsonAdaptedTag::new)
             .collect(Collectors.toList());
@@ -54,15 +54,16 @@ public class JsonAdaptedPersonTest {
                         "-",
                         "-",
                         "-",
-                        VALID_TELEGRAM,
+                        "-",
                         VALID_TAGS,
                         VALID_TUT_INFOS
                 );
         Person modelPerson = person.toModelType();
         assertEquals(VALID_NAME, modelPerson.getName().fullName);
-        assertEquals("-", modelPerson.getPhone().value);
-        assertEquals("-", modelPerson.getEmail().value);
-        assertEquals("-", modelPerson.getAddress().value);
+        assertEquals("-", modelPerson.getDisplayPhone());
+        assertEquals("-", modelPerson.getDisplayEmail());
+        assertEquals("-", modelPerson.getDisplayAddress());
+        assertEquals("-", modelPerson.getDisplayTelegram());
     }
 
     @Test

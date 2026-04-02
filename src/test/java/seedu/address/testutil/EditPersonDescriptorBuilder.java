@@ -10,6 +10,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -33,10 +34,10 @@ public class EditPersonDescriptorBuilder {
     public EditPersonDescriptorBuilder(Person person) {
         descriptor = new EditPersonDescriptor();
         descriptor.setName(person.getName());
-        descriptor.setPhone(person.getPhone());
-        descriptor.setEmail(person.getEmail());
-        descriptor.setAddress(person.getAddress());
-        descriptor.setTelegram(person.getTelegram());
+        descriptor.setPhone(person.getPhone().orElse(null));
+        descriptor.setEmail(person.getEmail().orElse(null));
+        descriptor.setAddress(person.getAddress().orElse(null));
+        descriptor.setTelegram(person.getTelegram().orElse(null));
         descriptor.setTags(person.getTags());
     }
 
@@ -73,11 +74,63 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
+     * Sets the {@code Telegram} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withTelegram(String telegram) {
+        descriptor.setTelegram(new Telegram(telegram));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Phone} of the {@code EditPersonDescriptor} to be missing.
+     */
+    public EditPersonDescriptorBuilder withoutPhone() {
+        descriptor.setPhone(null);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Email} of the {@code EditPersonDescriptor} to be missing.
+     */
+    public EditPersonDescriptorBuilder withoutEmail() {
+        descriptor.setEmail(null);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Address} of the {@code EditPersonDescriptor} to be missing.
+     */
+    public EditPersonDescriptorBuilder withoutAddress() {
+        descriptor.setAddress(null);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Telegram} of the {@code EditPersonDescriptor} to be missing.
+     */
+    public EditPersonDescriptorBuilder withoutTelegram() {
+        descriptor.setTelegram(null);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Tags} of the {@code EditPersonDescriptor} to be missing.
+     */
+    public EditPersonDescriptorBuilder withoutTags() {
+        descriptor.setTags(null);
+        return this;
+    }
+
+    /**
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code EditPersonDescriptor}
      * that we are building.
      */
     public EditPersonDescriptorBuilder withTags(String... tags) {
-        Set<Tag> tagSet = Stream.of(tags).map(Tag::new).collect(Collectors.toSet());
+        Set<Tag> tagSet = Stream.of(tags)
+                .filter(tag -> !tag.isBlank())
+                .map(Tag::new)
+                .collect(Collectors.toSet());
+
         descriptor.setTags(tagSet);
         return this;
     }

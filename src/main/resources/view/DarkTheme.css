@@ -383,10 +383,12 @@
     -fx-background-color: #cacaca;
     -fx-border-color: transparent;
     -fx-padding: 0;
+    -fx-background-radius: 14;
 }
 
 .tut-info-scroll .viewport {
     -fx-background-color: #cacaca;
+    -fx-background-radius: 14;
 }
 
 .tut-info-scroll .scroll-bar:vertical {

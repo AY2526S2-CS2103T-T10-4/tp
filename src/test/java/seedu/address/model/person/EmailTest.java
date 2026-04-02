@@ -29,6 +29,9 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("")); // empty string
         assertFalse(Email.isValidEmail(" ")); // spaces only
 
+        // invalid dash placeholder
+        assertFalse(Telegram.isValidTelegramHandle("-"));
+
         // missing parts
         assertFalse(Email.isValidEmail("@example.com")); // missing local part
         assertFalse(Email.isValidEmail("peterjackexample.com")); // missing '@' symbol

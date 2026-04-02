@@ -1,15 +1,18 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonMatchesKeywordsPredicate;
 
 public class FindCommandParserTest {
 
@@ -22,13 +25,24 @@ public class FindCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsFindCommand() {
-        // no leading and trailing whitespaces
-        FindCommand expectedFindCommand =
-                new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList("Alice", "Bob")));
-        assertParseSuccess(parser, "Alice Bob", expectedFindCommand);
+        PersonMatchesKeywordsPredicate expectedPredicate = new PersonMatchesKeywordsPredicate(
+                Arrays.asList("Alice", "Bob"),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList()
+        );
+        FindCommand expectedFindCommand = new FindCommand(expectedPredicate);
 
-        // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
+        assertParseSuccess(parser, " " + PREFIX_NAME + "Alice " + PREFIX_NAME + "Bob", expectedFindCommand);
+
+        assertParseSuccess(parser, " \n " + PREFIX_NAME
+                + "Alice \n \t " + PREFIX_NAME + "Bob  \t", expectedFindCommand);
     }
+
+    @Test
+    public void parse_tutorialWithoutCourse_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_TUTORIAL + "T01", FindCommand.MESSAGE_TUTORIAL_REQUIRES_COURSE);
+    }
+
+
 
 }

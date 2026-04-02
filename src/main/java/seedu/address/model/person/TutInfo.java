@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static seedu.address.commons.util.AppUtil.checkArgument;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Arrays;
@@ -27,6 +28,9 @@ public class TutInfo {
      */
     public TutInfo(String courseCode, String tutorialCode, boolean[] attendance) {
         requireAllNonNull(courseCode, tutorialCode, attendance);
+        checkArgument(isValidCode(courseCode), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidCode(tutorialCode), MESSAGE_CONSTRAINTS);
+
         this.courseCode = courseCode.toUpperCase();
         this.tutorialCode = tutorialCode.toUpperCase();
         // Defensive programming, to prevent the client from providing an array with wrong length
@@ -79,12 +83,12 @@ public class TutInfo {
     }
 
     /**
-     * Formats and returns the course code and tutorial code in uppercase and separated by a space.
+     * Formats and returns the course code and tutorial code separated by a space.
      *
      * @return A formatted string representation of the course and tutorial codes for display.
      */
     public String toDisplayString() {
-        return courseCode.toUpperCase() + " " + tutorialCode.toUpperCase();
+        return courseCode + " " + tutorialCode;
     }
 
     @Override

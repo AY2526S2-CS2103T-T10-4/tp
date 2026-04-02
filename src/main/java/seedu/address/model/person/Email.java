@@ -40,9 +40,7 @@ public class Email {
      */
     public Email(String email) {
         requireNonNull(email);
-        if (!email.equals("-")) {
-            checkArgument(isValidEmail(email), MESSAGE_CONSTRAINTS);
-        }
+        checkArgument(isValidEmail(email), MESSAGE_CONSTRAINTS);
         value = email;
     }
 

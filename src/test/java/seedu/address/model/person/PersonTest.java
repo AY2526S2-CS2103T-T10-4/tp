@@ -13,6 +13,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,42 @@ public class PersonTest {
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
         Person person = new PersonBuilder().build();
         assertThrows(UnsupportedOperationException.class, () -> person.getTags().remove(0));
+    }
+
+    @Test
+    public void getDisplayPhone_withOrWithoutPhone_returnsCorrectValue() {
+        Person personWithPhone = new PersonBuilder().withPhone("80001212").build();
+        assertEquals("80001212", personWithPhone.getDisplayPhone());
+
+        Person personWithoutPhone = new PersonBuilder().withoutPhone().build();
+        assertEquals(Person.MISSING_OPTIONAL_FIELD_VALUE, personWithoutPhone.getDisplayPhone());
+    }
+
+    @Test
+    public void getDisplayEmail_withOrWithoutEmail_returnsCorrectValue() {
+        Person personWithEmail = new PersonBuilder().withEmail("xxx@gmail.com").build();
+        assertEquals("xxx@gmail.com", personWithEmail.getDisplayEmail());
+
+        Person personWithoutEmail = new PersonBuilder().withoutEmail().build();
+        assertEquals(Person.MISSING_OPTIONAL_FIELD_VALUE, personWithoutEmail.getDisplayEmail());
+    }
+
+    @Test
+    public void getDisplayAddress_withOrWithoutAddress_returnsCorrectValue() {
+        Person personWithAddress = new PersonBuilder().withAddress("Blk 30 Geylang Street 29, #06-40").build();
+        assertEquals("Blk 30 Geylang Street 29, #06-40", personWithAddress.getDisplayAddress());
+
+        Person personWithoutAddress = new PersonBuilder().withoutAddress().build();
+        assertEquals(Person.MISSING_OPTIONAL_FIELD_VALUE, personWithoutAddress.getDisplayAddress());
+    }
+
+    @Test
+    public void getDisplayTelegram_withOrWithoutTelegram_returnsCorrectValue() {
+        Person personWithTelegram = new PersonBuilder().withTelegram("AlexYeoh1230").build();
+        assertEquals("@AlexYeoh1230", personWithTelegram.getDisplayTelegram());
+
+        Person personWithoutTelegram = new PersonBuilder().withoutTelegram().build();
+        assertEquals(Person.MISSING_OPTIONAL_FIELD_VALUE, personWithoutTelegram.getDisplayTelegram());
     }
 
     @Test
@@ -47,15 +84,15 @@ public class PersonTest {
         Person editedBob = new PersonBuilder(BOB).withEmail(VALID_EMAIL_BOB.toUpperCase()).build();
         assertTrue(BOB.isSamePerson(editedBob));
 
-        // email is "-", all other attributes same -> returns false
-        editedAlice = new PersonBuilder(ALICE).withEmail("-").build();
-        Person anotherEditedAlice = new PersonBuilder(ALICE).withEmail("-").build();
+        // email is missing, all other attributes same -> returns false
+        editedAlice = new PersonBuilder(ALICE).withoutEmail().build();
+        Person anotherEditedAlice = new PersonBuilder(ALICE).withoutEmail().build();
         assertFalse(editedAlice.isSamePerson(anotherEditedAlice));
 
-        // first person email is "-", second person email is not "-" -> returns false
+        // first person email is missing, second person email is present -> returns false
         assertFalse(editedAlice.isSamePerson(ALICE));
 
-        // first person email is not "-", second person email is "-" -> returns false
+        // first person email is present, second person email is missing -> returns false
         assertFalse(ALICE.isSamePerson(editedAlice));
     }
 
@@ -99,6 +136,10 @@ public class PersonTest {
 
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
+        assertFalse(ALICE.equals(editedAlice));
+
+        // different tutInfos -> returns false
+        editedAlice = new PersonBuilder(ALICE).withTutInfos(List.of(new TutInfo("CS2109S", "T19"))).build();
         assertFalse(ALICE.equals(editedAlice));
     }
 

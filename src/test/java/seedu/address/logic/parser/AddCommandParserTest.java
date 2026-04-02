@@ -142,10 +142,10 @@ public class AddCommandParserTest {
     public void parse_optionalFieldsMissing_success() {
         // zero tags, missing phone, email, address
         Person expectedPerson = new PersonBuilder(AMY)
-                .withPhone("-")
-                .withEmail("-")
-                .withAddress("-")
-                .withTelegram("-")
+                .withoutPhone()
+                .withoutEmail()
+                .withoutAddress()
+                .withoutTelegram()
                 .withTags()
                 .build();
         assertParseSuccess(parser, NAME_DESC_AMY,
