@@ -177,13 +177,36 @@ public class PersonListPanel extends UiPart<Region> {
      */
     public void clearSelection() {
         personListView.getSelectionModel().clearSelection();
-        personListView.scrollTo(Math.max(lastShownIndex, 0));
+        int listSize = personListView.getItems().size();
+        int scrollIndex = calculateScrollIndexAfterClearingSelection(lastShownIndex, listSize);
 
-        assert lastShownIndex >= -1 && (lastShownIndex < personListView.getItems().size())
+        if (listSize == 0) {
+            lastShownIndex = -1;
+        } else if (lastShownIndex >= listSize) {
+            lastShownIndex = listSize - 1;
+        }
+
+        if (scrollIndex >= 0) {
+            personListView.scrollTo(scrollIndex);
+        }
+
+        assert isValidLastShownIndex(listSize)
                 : "lastShownIndex must be between -1 and the number of persons in personListView";
 
         logger.fine("Cleared person selection successfully and "
                 + "scrolled to last shown index of " + lastShownIndex);
+    }
+
+    static int calculateScrollIndexAfterClearingSelection(int lastShownIndex, int listSize) {
+        if (listSize <= 0) {
+            return -1;
+        }
+
+        return Math.min(Math.max(lastShownIndex, 0), listSize - 1);
+    }
+
+    private boolean isValidLastShownIndex(int listSize) {
+        return lastShownIndex == -1 || (lastShownIndex >= 0 && lastShownIndex < listSize);
     }
 
     /**
